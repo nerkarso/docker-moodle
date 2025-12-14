@@ -38,6 +38,7 @@ RUN echo 'max_input_vars = 5000' >> /usr/local/etc/php/php.ini
 
 # Configure Apache
 RUN a2enmod rewrite
+RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
 # Set DocumentRoot for Moodle 5.0+
 RUN sed -i 's|DocumentRoot /var/www/html|DocumentRoot /var/www/html/moodle/public|' /etc/apache2/sites-available/000-default.conf
