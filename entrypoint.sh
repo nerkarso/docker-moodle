@@ -12,6 +12,8 @@ fi
 if [ ! -d /var/www/html/moodle ]; then
   curl -o moodle.zip $MOODLE_URL
   unzip moodle.zip
+  rm moodle.zip
+  mv config-dist.php moodle/config.php
   cd moodle
   composer install --no-dev --classmap-authoritative
   chown -R www-data:www-data /var/www/html

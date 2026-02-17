@@ -48,8 +48,8 @@ RUN cat /tmp/moodle-apache.conf >> /etc/apache2/sites-available/000-default.conf
 # Set working directory
 WORKDIR /var/www/html
 
-# Copy custom Moodle configuration if needed
-# COPY moodle_config.php /var/www/html/moodle/config.php
+# Copy custom Moodle configuration in container
+COPY config-dist.php .
 
 # Expose port 80
 EXPOSE 80
