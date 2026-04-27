@@ -1,5 +1,5 @@
 # Use an official PHP image with Apache
-FROM php:8.4-apache as base
+FROM php:8.4-apache AS base
 
 # Install system dependencies and PHP extensions required by Moodle
 RUN apt-get update && apt-get install -y \
