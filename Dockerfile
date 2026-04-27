@@ -1,5 +1,5 @@
 # Use an official PHP image with Apache
-FROM php:8.4-apache
+FROM php:8.4-apache as base
 
 # Install system dependencies and PHP extensions required by Moodle
 RUN apt-get update && apt-get install -y \
@@ -18,8 +18,8 @@ RUN apt-get update && apt-get install -y \
     locales \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Composer
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+# Install Composer from the official image.
+COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
 
 RUN docker-php-ext-install -j$(nproc) \
     intl \
@@ -51,12 +51,14 @@ WORKDIR /var/www/html
 # Copy custom Moodle configuration in container
 COPY config-dist.php .
 
-# Expose port 80
-EXPOSE 80
+FROM base AS runtime
 
 # Copy entrypoint script
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
+
+# Expose port 80
+EXPOSE 80
 
 # Set entrypoint and command
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
